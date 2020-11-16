@@ -10,7 +10,7 @@ Make the following changes to your `app/build.gradle`
 - add the following dependencies und `dependencies`
     ```
     dependencies {
-        implementation group: 'tv.nexx', name: 'nexxplay-android-widget', version: '1.6', ext: 'aar'
+        implementation group: 'tv.nexx', name: 'nexxplay-android-widget', version: '1.7', ext: 'aar'
         implementation 'androidx.appcompat:appcompat:1.2.0'
         implementation 'com.googlecode.json-simple:json-simple:1.1'
         implementation 'com.android.volley:volley:1.1.1'
@@ -31,10 +31,18 @@ public class MainActivity extends AppCompatActivity {
         NexxWidget widget = new NexxWidget();
         JSONObject config = new JSONObject();
         try {
-            config.put("feedUpdateInterval", 90); // 30 minutes is default value
-            config.put("userHash","userhash");
-            config.put("deviceHash","devicehash");
-            config.put("language","de");
+			// value in minutes, 30 is the default value
+            config.put("feedUpdateInterval", 90);
+			// value in seconds, use this to override the interval from the feed
+            config.put("slideUpdateInterval", 5);
+			// if not provided, no value will be sent
+            config.put("userHash", "44e3c5b5a878");
+			// if not provided, no value will be sent
+            config.put("deviceHash", "072f22f77abf66");
+			// use iso 639-1 two-letter codes here
+			// see: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+			// if not provided, no value will be sent
+            config.put("language", "de");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -63,6 +71,16 @@ The data of the selected item/image will be sent to the specified activity via a
 - `slug`
 - `link`
 - `abTestVersion`
+
+## Handle intent
+`src/main/AndroidManifest.xml`:
+```xml
+<receiver android:name="tv.nexx.widget.widgetmodule.NexxWidget">
+    <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+    </intent-filter>
+</receiver>
+```
 
 ## Compatibility
 This widget should be compatible with Android 4.1 (API level 16) to Android 11 (API level 30).
