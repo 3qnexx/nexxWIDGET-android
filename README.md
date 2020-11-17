@@ -10,7 +10,7 @@ Make the following changes to your `app/build.gradle`
 - add the following dependencies und `dependencies`
     ```
     dependencies {
-        implementation group: 'tv.nexx', name: 'nexxplay-android-widget', version: '1.7', ext: 'aar'
+        implementation group: 'tv.nexx', name: 'nexxplay-android-widget', version: '1.8', ext: 'aar'
         implementation 'androidx.appcompat:appcompat:1.2.0'
         implementation 'com.googlecode.json-simple:json-simple:1.1'
         implementation 'com.android.volley:volley:1.1.1'
@@ -81,6 +81,31 @@ The data of the selected item/image will be sent to the specified activity via a
     </intent-filter>
 </receiver>
 ```
+
+## Handle intent
+`src/main/AndroidManifest.xml`:
+```xml
+<receiver android:name="tv.nexx.widget.widgetmodule.NexxWidget">
+    <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+    </intent-filter>
+</receiver>
+```
+
+## Customize widget icon and preview
+- Icon
+	- extension: `.png`
+	- filename: `widget_icon`
+	- image size: 512x512 is recommended
+		- has to be square
+		- can be transparent
+	- path: `src/main/res/drawable/`
+- Preview
+	- extension: `.png` or `.jpg`
+	- filename: `widget_preview`
+	- image size: 660x400 (thats a 33:20 resolution)
+	- path: `src/main/res/drawable/`
+
 
 ## Compatibility
 This widget should be compatible with Android 4.1 (API level 16) to Android 11 (API level 30).
